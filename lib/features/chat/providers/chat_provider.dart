@@ -135,8 +135,12 @@ class ChatMessagesNotifier extends Notifier<List<ChatMessage>> {
             : 'I\'m **VoteSmart India**, your election education assistant! I can help you with:\n\n🗳️ **Voter Eligibility** — Check if you can vote\n📝 **Registration** — How to register as a voter\n📋 **Documents** — What documents you need\n📅 **Election Timeline** — Upcoming election dates\n🏛️ **Voting Process** — What happens on voting day\n📊 **Results** — How results are declared\n\nWhat would you like to know?';
   }
 
-  void clearMessages() {
+  Future<void> clearHistory() async {
+    final session = ref.read(sessionProvider);
+    final firestoreService = ref.read(firestoreServiceProvider);
+    
     state = [];
-    _loaded = false;
+    _loaded = true; // Prevent reloading after clear
+    await firestoreService.clearChatHistory(session.sessionId);
   }
 }

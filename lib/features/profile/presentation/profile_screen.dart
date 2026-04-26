@@ -302,7 +302,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           FilledButton(
             onPressed: () {
               ref.read(sessionProvider.notifier).clearSession();
-              ref.read(chatMessagesProvider.notifier).clearMessages();
+              ref.read(chatMessagesProvider.notifier).clearHistory();
               Navigator.of(ctx).pop();
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Session cleared')),

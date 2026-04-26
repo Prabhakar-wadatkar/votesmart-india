@@ -76,7 +76,7 @@ void main() {
       expect(session.progressPercent, 0.0);
 
       // Complete step 1
-      container.read(sessionProvider.notifier).markStepComplete('eligibility');
+      await container.read(sessionProvider.notifier).markStepComplete('eligibility');
       session = container.read(sessionProvider);
       expect(session.completedSteps, 1);
       expect(session.progress['eligibility'], true);
@@ -84,7 +84,7 @@ void main() {
       // Complete all steps
       final steps = ['registration', 'verification', 'timeline', 'votingDay', 'results'];
       for (final step in steps) {
-        container.read(sessionProvider.notifier).markStepComplete(step);
+        await container.read(sessionProvider.notifier).markStepComplete(step);
       }
 
       session = container.read(sessionProvider);
@@ -101,20 +101,21 @@ void main() {
       );
       addTearDown(container.dispose);
 
-      // Set age to 17
-      container.read(sessionProvider.notifier).updateAge(17);
+      // Set age via DOB (to test daysUntilEligible)
+      final dob = DateTime.now().subtract(const Duration(days: 17 * 365));
+      await container.read(sessionProvider.notifier).updateDateOfBirth(dob);
       var session = container.read(sessionProvider);
       expect(session.isEligible, false);
       expect(session.daysUntilEligible, isNotNull);
 
       // Set age to 18
-      container.read(sessionProvider.notifier).updateAge(18);
+      await container.read(sessionProvider.notifier).updateAge(18);
       session = container.read(sessionProvider);
       expect(session.isEligible, true);
       expect(session.daysUntilEligible, isNull);
 
       // Set location
-      container.read(sessionProvider.notifier).updateLocation('Mumbai');
+      await container.read(sessionProvider.notifier).updateLocation('Mumbai');
       session = container.read(sessionProvider);
       expect(session.location, 'Mumbai');
     });
@@ -128,8 +129,8 @@ void main() {
       );
       addTearDown(container.dispose);
 
-      container.read(sessionProvider.notifier).markStepComplete('registration');
-      container.read(sessionProvider.notifier).markStepComplete('registration');
+      await container.read(sessionProvider.notifier).markStepComplete('registration');
+      await container.read(sessionProvider.notifier).markStepComplete('registration');
       
       final session = container.read(sessionProvider);
       expect(session.completedSteps, 1);

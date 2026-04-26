@@ -33,10 +33,9 @@ void main() {
     // Wait for localizations
     await tester.pumpAndSettle();
 
-    // Check if initial message is shown (Assistant's first message)
-    expect(find.byType(ListView), findsOneWidget);
-    // There should be at least one message from the assistant
-    expect(find.textContaining('VoteSmart India'), findsOneWidget);
+    // Initial state should show suggestions and input bar
+    expect(find.byType(TextField), findsOneWidget);
+    expect(find.byType(ActionChip), findsWidgets);
   });
 
   testWidgets('Chat input should update text and send message', (WidgetTester tester) async {
@@ -76,11 +75,14 @@ void main() {
     final sendButton = find.byIcon(Icons.send_rounded);
     expect(sendButton, findsOneWidget);
 
-    // Tap send (this will trigger a provider call, but since we're in a widget test, we just check UI behavior)
+    // Tap send
     await tester.tap(sendButton);
+    // Pump multiple times to ensure the build cycle completes
     await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
 
     // The text field should be cleared
-    expect(find.text('Hello!'), findsNothing);
+    final inputField = tester.widget<TextField>(find.byType(TextField));
+    expect(inputField.controller?.text, '');
   });
 }

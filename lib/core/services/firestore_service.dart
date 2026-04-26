@@ -64,6 +64,12 @@ class FirestoreService {
     return [];
   }
 
+  Future<void> clearChatHistory(String sessionId) async {
+    try {
+      await _chats.doc(sessionId).delete();
+    } catch (_) {}
+  }
+
   // ─── Elections ──────────────────────────────────────────
   CollectionReference get _elections => _firestore.collection('elections');
 
