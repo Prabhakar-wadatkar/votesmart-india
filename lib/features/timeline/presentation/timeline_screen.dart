@@ -197,40 +197,42 @@ class _TimelineCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Timeline line
-        SizedBox(
-          width: 32,
-          child: Column(
-            children: [
-              Container(
-                width: 16,
-                height: 16,
-                decoration: BoxDecoration(
-                  color: _typeColor,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: _typeColor.withValues(alpha: 0.4),
-                      blurRadius: 8,
-                    ),
-                  ],
-                ),
-              ),
-              if (!isLast)
+        ExcludeSemantics(
+          child: SizedBox(
+            width: 32,
+            child: Column(
+              children: [
                 Container(
-                  width: 2,
-                  height: 160,
+                  width: 16,
+                  height: 16,
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        _typeColor,
-                        _typeColor.withValues(alpha: 0.2),
-                      ],
-                    ),
+                    color: _typeColor,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: _typeColor.withValues(alpha: 0.4),
+                        blurRadius: 8,
+                      ),
+                    ],
                   ),
                 ),
-            ],
+                if (!isLast)
+                  Container(
+                    width: 2,
+                    height: 160,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          _typeColor,
+                          _typeColor.withValues(alpha: 0.2),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
         const SizedBox(width: 12),

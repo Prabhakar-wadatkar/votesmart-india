@@ -88,8 +88,7 @@ class HomeScreen extends ConsumerWidget {
                       color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: const Semantics(
-                      label: 'Voting Icon',
+                    child: const ExcludeSemantics(
                       child: Icon(
                         Icons.how_to_vote_rounded,
                         color: Colors.white,
@@ -213,11 +212,14 @@ class HomeScreen extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          l10n.quickActions,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
+        Semantics(
+          header: true,
+          child: Text(
+            l10n.quickActions,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+          ),
         ),
         const SizedBox(height: 12),
         Wrap(
@@ -261,11 +263,14 @@ class HomeScreen extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          l10n.recentChats,
-          style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
+        Semantics(
+          header: true,
+          child: Text(
+            l10n.recentChats,
+            style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+          ),
         ),
         const SizedBox(height: 12),
         Container(
