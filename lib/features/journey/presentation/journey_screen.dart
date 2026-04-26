@@ -321,15 +321,30 @@ class _JourneyStepCard extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 12),
-                              Text(
-                                detailBody,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  height: 1.6,
-                                  color: theme.colorScheme.onSurface
-                                      .withValues(alpha: 0.8),
+                                Text(
+                                  detailBody,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    height: 1.6,
+                                    color: theme.colorScheme.onSurface
+                                        .withValues(alpha: 0.8),
+                                  ),
                                 ),
-                              ),
+                                if (index == 1) ...[
+                                  const SizedBox(height: 16),
+                                  const Text(
+                                    'Required Documents Checklist:',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  _DocumentItem(label: 'Proof of Age (Aadhaar, Birth Certificate)'),
+                                  _DocumentItem(label: 'Proof of Residence (Electricity Bill, Passport)'),
+                                  _DocumentItem(label: 'Passport size photograph'),
+                                  _DocumentItem(label: 'Form 6 (Application for inclusion)'),
+                                ],
                               const SizedBox(height: 16),
                               if (!isCompleted)
                                 SizedBox(
@@ -386,6 +401,48 @@ class _JourneyStepCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _DocumentItem extends StatefulWidget {
+  final String label;
+  const _DocumentItem({required this.label});
+
+  @override
+  State<_DocumentItem> createState() => _DocumentItemState();
+}
+
+class _DocumentItemState extends State<_DocumentItem> {
+  bool _checked = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => setState(() => _checked = !_checked),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: Row(
+          children: [
+            Icon(
+              _checked ? Icons.check_box_rounded : Icons.check_box_outline_blank_rounded,
+              color: _checked ? const Color(0xFF138808) : Colors.grey,
+              size: 20,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                widget.label,
+                style: TextStyle(
+                  fontSize: 13,
+                  decoration: _checked ? TextDecoration.lineThrough : null,
+                  color: _checked ? Colors.grey : null,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

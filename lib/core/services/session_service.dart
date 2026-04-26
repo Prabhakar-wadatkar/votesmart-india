@@ -2,6 +2,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import '../models/session_model.dart';
 
+/// [SessionService] handles local persistence of user data using SharedPreferences.
+/// It ensures that user progress and preferences are maintained across app restarts.
 class SessionService {
   static const _sessionKey = 'votesmart_session_id';
   static const _ageKey = 'votesmart_age';
@@ -14,6 +16,7 @@ class SessionService {
 
   final SharedPreferences _prefs;
 
+  /// Creates a [SessionService] with the provided [SharedPreferences] instance.
   SessionService(this._prefs);
 
   /// Get or create session ID

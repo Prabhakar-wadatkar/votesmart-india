@@ -1,14 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// [SessionModel] represents a user's anonymous session in the VoteSmart India app.
+/// It tracks user progress, eligibility parameters, and local preferences.
 class SessionModel {
+  /// Unique identifier generated on the first visit (stored in local storage).
   final String sessionId;
+
+  /// User's age, used for eligibility calculations.
   final int? age;
+
+  /// User's date of birth, used for precise eligibility countdowns.
   final DateTime? dateOfBirth;
+
+  /// User's specified location (city/district).
   final String? location;
+
+  /// Administrative region (state) for filtering election timelines.
   final String? region;
+
+  /// Map of completed journey steps (e.g., 'eligibility', 'registration').
   final Map<String, bool> progress;
+
+  /// User's preferred language code (e.g., 'en', 'hi', 'mr').
   final String language;
+
+  /// Timestamp when the session was first created.
   final DateTime createdAt;
+
+  /// Timestamp of the user's last interaction.
   final DateTime lastActive;
 
   SessionModel({

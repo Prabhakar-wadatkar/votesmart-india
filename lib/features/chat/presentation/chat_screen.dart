@@ -16,6 +16,7 @@ class ChatScreen extends ConsumerStatefulWidget {
 class _ChatScreenState extends ConsumerState<ChatScreen> {
   final _controller = TextEditingController();
   final _scrollController = ScrollController();
+  final _focusNode = FocusNode();
   bool _initialized = false;
 
   @override
@@ -33,6 +34,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   void dispose() {
     _controller.dispose();
     _scrollController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -54,6 +56,30 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     _controller.clear();
     ref.read(chatMessagesProvider.notifier).sendMessage(text);
     _scrollToBottom();
+    _focusNode.requestFocus();
+  }
+
+  void _clearChat() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Clear Chat?'),
+        content: const Text('This will delete all messages in this session.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              ref.read(chatMessagesProvider.notifier).clearHistory();
+              Navigator.pop(context);
+            },
+            child: const Text('Clear'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -79,8 +105,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 ),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(Icons.smart_toy_rounded,
-                  color: Colors.white, size: 20),
+              child: const ExcludeSemantics(
+                child: Icon(Icons.smart_toy_rounded,
+                    color: Colors.white, size: 20),
+              ),
             ),
             const SizedBox(width: 12),
             Column(
@@ -99,6 +127,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            onPressed: _clearChat,
+            icon: const Icon(Icons.delete_sweep_rounded),
+            tooltip: 'Clear History',
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -272,6 +307,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             Expanded(
               child: TextField(
                 controller: _controller,
+                focusNode: _focusNode,
                 enabled: !isLoading,
                 onSubmitted: (_) => _sendMessage(),
                 decoration: InputDecoration(

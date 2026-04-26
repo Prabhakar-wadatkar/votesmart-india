@@ -20,6 +20,15 @@ class FakeSharedPreferences extends Fake implements SharedPreferences {
   }
 
   @override
+  int? getInt(String key) => _data[key] as int?;
+
+  @override
+  Future<bool> setInt(String key, int value) async {
+    _data[key] = value;
+    return true;
+  }
+
+  @override
   bool? getBool(String key) => _data[key] as bool?;
 
   @override
@@ -29,10 +38,19 @@ class FakeSharedPreferences extends Fake implements SharedPreferences {
   }
 
   @override
+  Future<bool> remove(String key) async {
+    _data.remove(key);
+    return true;
+  }
+
+  @override
   Future<bool> clear() async {
     _data.clear();
     return true;
   }
+
+  @override
+  Set<String> getKeys() => _data.keys.toSet();
 }
 
 class FakeFirestoreService extends Fake implements FirestoreService {
